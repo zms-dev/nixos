@@ -1,0 +1,57 @@
+* {
+  font-family: "Iosevka Nerd Font Mono", "Font Awesome 6 Free";
+  font-size: 24px;
+}
+
+window#waybar {
+  $border-radius: 10px;
+  $padding: 4px 8px;
+
+  background: rgba(0, 0, 0, 0.0);
+  color: #fff;
+
+  box.horizontal {
+    box.horizontal.modules-left {
+      widget {
+        box#workspaces.horizontal {
+          button {
+            background-color: green;
+            color: white;
+            border-radius: $border-radius;
+            padding: $padding;
+            margin-left: 16px;
+            min-width: 24px;
+
+            &.focused {}
+
+            &.visible {}
+
+            &.urgent {}
+
+            &.hidden {}
+
+            &.empty {
+              background-color: orange;
+            }
+
+             &.active {
+              background-color: blue;
+            }
+          }
+        }
+      }
+    }
+    box.horizontal.modules-center {}
+    box.horizontal.modules-right {
+      widget {
+        label {
+          background-color: red;
+          color: white;
+          border-radius: $border-radius;
+          padding: $padding;
+          min-width: 24px;
+        }
+      }
+    }
+  }
+}
