@@ -56,6 +56,8 @@
       "$mod, 8, workspace, 8"
       "$mod, 9, workspace, 9"
       "$mod, 0, workspace, 10"
+      "$mod CTRL, left, movetoworkspace, E-1"
+      "$mod CTRL, right, movetoworkspace, E+1"
 
       "$mod SHIFT, 1, movetoworkspace, 1"
       "$mod SHIFT, 2, movetoworkspace, 2"

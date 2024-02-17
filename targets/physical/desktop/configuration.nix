@@ -20,13 +20,17 @@
       inputs.nixvim.nixosModules.nixvim
     ];
 
-  #fonts.fontconfig.enable = true;
-  #fonts.fontconfig.defaultFonts = {
-  #  monospace = [ "Iosevka Nerd Font" ];
-  #};
+  fonts.fontconfig.enable = true;
+  fonts.fontconfig.defaultFonts = {
+    monospace = [ "Iosevka Nerd Font Mono" ];
+  };
   #fonts.packages = with pkgs; [
   #  (nerdfonts.override { fonts = [ "Iosevka" ]; })
   #];
+
+  home-manager.sharedModules = [
+    inputs.sops-nix.homeManagerModules.sops
+  ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
   nixpkgs.config.allowUnfree = true;

@@ -23,6 +23,7 @@
     # nerdfonts
     (nerdfonts.override { fonts = [ "Iosevka" ]; })
     font-awesome
+    swww
   ];
   home.sessionVariables = {
     TERM = "kitty";
@@ -37,6 +38,22 @@
     size = 24;
   };
 
+  #config.sops.secrets = {
+  #  "github-signingkey-detsys" = {
+  #    format = "binary";
+  #    sopsFile = ../secrets/encrypted/github-signingkey-detsys;
+  #    owner = "zms";
+  #    group = "zms";
+  #    mode = "0600";
+  #  };
+  #};
+
+  wayland.windowManager.hyprland.settings.exec-once = [
+    "${pkgs.swww}/bin/swww init"
+  ];
+
+
   programs.git.userName = "zms";
   programs.git.userEmail = "root@zms.dev";
+  #programs.git.signingkey = config.sops.secrets."github-signingkey-detsys".path;
 }
