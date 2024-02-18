@@ -3,6 +3,10 @@
 {
   wayland.windowManager.hyprland.enable = true;
   wayland.windowManager.hyprland.systemd.enable = true;
+  wayland.windowManager.hyprland.xwayland.enable = true;
+  wayland.windowManager.hyprland.package = pkgs.hyprland.override {
+    enableXWayland = true;
+  };
   wayland.windowManager.hyprland.settings = {
     # exec-once = [ "waybar" ];
 

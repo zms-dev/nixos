@@ -1,10 +1,6 @@
 { config, lib, pkgs, inputs, ... }:
 
 {
-  imports = [
-    inputs.home-manager.nixosModules.default
-  ];
-
   users.users.zms = {
     isNormalUser = true;
     description = "zms";
@@ -12,7 +8,6 @@
     shell = pkgs.zsh;
     packages = with pkgs; [];
   };
-
 
   home-manager = {
     useGlobalPkgs = true;

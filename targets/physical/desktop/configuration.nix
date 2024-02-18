@@ -16,20 +16,23 @@
       ../../../services/xserver/default.nix
       ../../../time/default.nix
       ../../../users/zms/default.nix
+      inputs.home-manager.nixosModules.default
       inputs.hyprland.nixosModules.default
+      inputs.base16.nixosModule
       inputs.nixvim.nixosModules.nixvim
     ];
+
+  scheme = "${inputs.base16-schemes}/nord.yaml";
 
   fonts.fontconfig.enable = true;
   fonts.fontconfig.defaultFonts = {
     monospace = [ "Iosevka Nerd Font Mono" ];
   };
-  #fonts.packages = with pkgs; [
-  #  (nerdfonts.override { fonts = [ "Iosevka" ]; })
-  #];
 
   home-manager.sharedModules = [
-    inputs.sops-nix.homeManagerModules.sops
+    inputs.base16.homeManagerModule
+    inputs.nix-colors.homeManagerModules.default
+    inputs.nixvim.homeManagerModules.nixvim
   ];
 
   nix.settings.experimental-features = ["nix-command" "flakes"];
