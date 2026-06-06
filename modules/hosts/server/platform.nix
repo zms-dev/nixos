@@ -1,3 +1,4 @@
+# platform — host CPU architecture and VM variant shared directory rules configuration for server host
 { ... }:
 {
   den.aspects.hosts._.server._.platform = {

@@ -1,3 +1,7 @@
+/*
+  container — containerized rTorrent BitTorrent client instance
+  https://github.com/rakshasa/rtorrent
+*/
 { den, lib, ... }:
 {
   den.aspects.containers._.rtorrent = {

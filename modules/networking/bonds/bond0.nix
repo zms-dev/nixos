@@ -1,3 +1,4 @@
+# bond0 — LACP network bonding configuration for bond0
 { den, ... }:
 {
   den.aspects.networking._.bonds._.bond0 = {

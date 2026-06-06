@@ -1,3 +1,7 @@
+/*
+  mcp — Model Context Protocol (MCP) client configurations and servers setup
+  https://github.com/natsukium/mcp-servers-nix
+*/
 { den, inputs, ... }:
 {
   flake-file.inputs = {

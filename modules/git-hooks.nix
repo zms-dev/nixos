@@ -1,3 +1,7 @@
+/*
+  git-hooks.nix — repository pre-commit git hooks and formatting checks
+  https://github.com/cachix/git-hooks.nix
+*/
 { inputs, ... }:
 {
   flake-file.inputs = {

@@ -1,3 +1,4 @@
+# devshell — default development shell environment and git pre-commit setup
 { ... }:
 {
   perSystem =

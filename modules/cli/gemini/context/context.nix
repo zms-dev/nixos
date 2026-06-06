@@ -1,3 +1,4 @@
+# context — configuration to load context templates and system profiles for gemini-cli
 { ... }:
 {
   den.aspects.cli._.gemini-cli._.context = {

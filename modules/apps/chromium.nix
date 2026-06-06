@@ -1,3 +1,7 @@
+/*
+  chromium — Chromium browser with extensions, hardware acceleration, and privacy optimizations
+  https://www.chromium.org/
+*/
 { ... }:
 {
   den.aspects.apps._.chromium = {

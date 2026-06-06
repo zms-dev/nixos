@@ -1,4 +1,7 @@
-# Samsung NVMe SSD — fstrim, smartd, nvme-cli, power-saving PS latency tuning, and I/O scheduler udev rules
+/*
+  samsung-ssd — Samsung NVMe SSD configuration, enabling fstrim, smartd monitoring, and NVMe optimization
+  https://github.com/linux-nvme/nvme-cli
+*/
 { ... }:
 {
   den.aspects.hw._.samsung-ssd = {

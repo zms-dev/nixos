@@ -1,3 +1,4 @@
+# subnets — option definitions for declarative L3 subnets
 { den, ... }:
 {
   den.aspects.networking._.subnets = {

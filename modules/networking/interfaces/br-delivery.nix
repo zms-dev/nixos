@@ -1,3 +1,4 @@
+# br-delivery — bridge interface configuration for delivery subnet
 { den, ... }:
 {
   den.aspects.networking._.interfaces._.br-delivery = {

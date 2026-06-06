@@ -1,3 +1,4 @@
+# iso — custom bootable NixOS installation media generation
 {
   inputs,
   self,

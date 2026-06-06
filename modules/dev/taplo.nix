@@ -1,3 +1,7 @@
+/*
+  taplo — TOML toolkit and language server
+  https://github.com/tamasfe/taplo
+*/
 { ... }:
 {
   den.aspects.dev._.taplo = {

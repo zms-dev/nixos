@@ -1,3 +1,4 @@
+# dendritic — modular system structure and flake inputs integration
 { inputs, ... }:
 {
   imports = [

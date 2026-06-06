@@ -1,3 +1,4 @@
+# tools — tool execution settings configuration for gemini-cli
 { ... }:
 {
   den.aspects.cli._.gemini-cli._.tools = {

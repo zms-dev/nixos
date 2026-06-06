@@ -1,3 +1,4 @@
+# br-untrusted — bridge interface configuration for untrusted subnet
 { den, ... }:
 {
   den.aspects.networking._.interfaces._.br-untrusted = {

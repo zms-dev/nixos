@@ -1,3 +1,4 @@
+# backend — backend subnet configuration
 { den, ... }:
 {
   den.aspects.networking._.subnets._.backend = {

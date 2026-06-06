@@ -1,3 +1,4 @@
+# boot — minimal boot loader configuration for server host
 { lib, ... }:
 {
   den.aspects.hosts._.server._.boot = {

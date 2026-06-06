@@ -1,3 +1,7 @@
+/*
+  layout — layout and visual settings configuration for the niri compositor
+  https://github.com/YaLTeR/niri
+*/
 { ... }:
 {
   den.aspects.gui._.niri._.layout = {

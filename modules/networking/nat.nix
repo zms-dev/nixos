@@ -1,3 +1,4 @@
+# nat — NAT (Network Address Translation) configuration
 { den, ... }:
 {
   den.aspects.networking._.nat = {

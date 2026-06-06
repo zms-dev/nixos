@@ -1,3 +1,7 @@
+/*
+  shfmt — formatter for shell scripts
+  https://github.com/mvdan/sh
+*/
 { ... }:
 {
   den.aspects.dev._.shfmt = {

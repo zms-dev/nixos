@@ -1,3 +1,4 @@
+# utilities — general system utilities command execution policy rules configuration for gemini-cli
 { ... }:
 {
   den.aspects.cli._.gemini-cli._.policies._.utilities = {

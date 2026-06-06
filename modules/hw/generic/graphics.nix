@@ -1,4 +1,4 @@
-# graphics — hardware.graphics subsystem; enables OpenGL/Vulkan acceleration and DRI
+# graphics — hardware graphics subsystem with OpenGL/Vulkan acceleration and DRI support
 { ... }:
 {
   den.aspects.hw._.graphics = {

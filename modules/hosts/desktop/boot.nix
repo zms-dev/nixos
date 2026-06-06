@@ -1,3 +1,4 @@
+# boot — boot loader and kernel module configuration for desktop host
 { pkgs, ... }:
 {
   den.aspects.hosts._.desktop._.boot = {

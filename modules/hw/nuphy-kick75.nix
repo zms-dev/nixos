@@ -1,4 +1,7 @@
-# NuPhy Kick75 — 75% wireless mechanical keyboard; VIA udev rules for HID access (VID 19f5)
+/*
+  nuphy-kick75 — NuPhy Kick75 keyboard configuration with udev rules for VIA interface
+  https://github.com/the-via/releases
+*/
 { den, ... }:
 {
   den.aspects.hw._.nuphy-kick75 = {

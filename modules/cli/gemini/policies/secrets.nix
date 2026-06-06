@@ -1,3 +1,4 @@
+# secrets — repository and environment secret files access policy rules configuration for gemini-cli
 { ... }:
 {
   den.aspects.cli._.gemini-cli._.policies._.secrets = {

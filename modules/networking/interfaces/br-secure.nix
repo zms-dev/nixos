@@ -1,3 +1,4 @@
+# br-secure — bridge interface configuration for secure subnet
 { den, ... }:
 {
   den.aspects.networking._.interfaces._.br-secure = {

@@ -1,3 +1,4 @@
+# untrusted — untrusted subnet configuration
 { den, ... }:
 {
   den.aspects.networking._.subnets._.untrusted = {

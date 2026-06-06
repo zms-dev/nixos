@@ -1,3 +1,7 @@
+/*
+  neovide — graphical user interface client for Neovim
+  https://github.com/neovide/neovide
+*/
 { den, ... }:
 {
   den.aspects.apps._.neovide = {

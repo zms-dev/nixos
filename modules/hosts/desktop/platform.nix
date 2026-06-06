@@ -1,3 +1,4 @@
+# platform — host CPU architecture and platform definition for desktop host
 { ... }:
 {
   den.aspects.hosts._.desktop._.platform = {

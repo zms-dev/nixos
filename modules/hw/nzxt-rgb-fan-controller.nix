@@ -1,18 +1,7 @@
-# NZXT RGB & Fan Controller — USB hub for up to 7 fans; OpenRGB per-zone RGB + CoolerControl CPU/GPU-based fan profiles
-# NOTES:
-#
-# [openrgb zones]
-# Zone 1 - Bottom (3 fans)
-# Zone 2 - Side (3 fans)
-# Zone 3 - Back (1 fan)
-#
-# Example: openrgb --device 6 --mode Direct --zone 1 --color ff0000
-#
-# [coolercontrol fans]
-# fan1 - Back (1 fan)    → CPU temp
-# fan2 - Bottom (3 fans) → GPU temp
-# fan3 - Side (3 fans)   → CPU temp
-
+/*
+  nzxt-rgb-fan-controller — NZXT RGB & Fan Controller profile, configuring fan curves via CoolerControl and lighting via OpenRGB
+  https://gitlab.com/coolercontrol/coolercontrol
+*/
 { den, ... }:
 let
   uid = "7ceb77ac2104d6434b22f701dd5f96ebc5cc872553f371059b0f5173c0957f97";
