@@ -1,0 +1,17 @@
+# sops-nix configuration
+keys:
+  - &root age16jvtj3xjat4vydtvd0kmyn89c3xg03m95xfgdwtr4ezgeuzrksssfqma6m
+  - &desktop age1dd7t07wdffcwrkwljlx8tl3fmq5ayx7k9tjxt2c6snsmcu4y5fmsh6v8v6
+  - &zms age1x7h4ftf3esadf55dyw8ujmya2k34whczt4xp5s0tegpzg38fqdssf00fjp
+
+creation_rules:
+  - path_regex: secrets/host-secrets\.yaml$
+    key_groups:
+      - age:
+          - *root
+          - *desktop
+  - path_regex: secrets/user-secrets\.yaml$
+    key_groups:
+      - age:
+          - *root
+          - *zms

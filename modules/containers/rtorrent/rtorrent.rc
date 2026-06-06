@@ -1,0 +1,140 @@
+# ==============================================================================
+# rTorrent Configuration File
+# Optimized for: 96 GB RAM, 16-Core CPU, and NFS Storage to a NAS
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# Directory Configuration
+# ------------------------------------------------------------------------------
+# Default directory to save downloaded data.
+directory.default.set = @downloadDir@
+
+# Directory where session state files (resume logs, torrents) are saved.
+session.path.set = @sessionDir@
+
+# Watch directory: automatically loads and starts any .torrent file dropped here.
+# Checked every 5 seconds (5s delay, 5s interval).
+schedule2 = watch_directory,5,5,load.start=@watchDir@/*.torrent
+
+# ------------------------------------------------------------------------------
+# Network and Connection Tuning
+# ------------------------------------------------------------------------------
+# Listening port range for incoming peer TCP connections.
+network.port_range.set = @startPort@-@endPort@
+
+# Do not randomize the listening port range on startup.
+network.port_random.set = no
+
+# SCGI TCP port for communication with web UIs (like Flood).
+network.scgi.open_port = 0.0.0.0:@scgiPort@
+
+# Send socket buffer size. 12MB buffers outbound peer data to minimize disk reads.
+network.send_buffer.size.set = 12M
+
+# Receive socket buffer size. 4MB buffers inbound data to prevent TCP throughput drops.
+network.receive_buffer.size.set = 4M
+
+# Maximum number of concurrent connections (TCP & UDP) rTorrent will maintain.
+# Scaled up for the 16-Core CPU.
+network.max_open_sockets.set = 2048
+
+# Maximum number of simultaneous HTTP requests (tracker announces/scrapes).
+network.http.max_open.set = 99
+
+# Maximum number of files rTorrent can keep open simultaneously.
+network.max_open_files.set = 2000
+
+# Disable curl's internal DNS cache in favor of the system resolver/DNS cache.
+# Eliminates thread-blocking on lookup changes.
+network.http.dns_cache_timeout.set = 0
+
+# ------------------------------------------------------------------------------
+# Connection & Slot Throttling
+# ------------------------------------------------------------------------------
+# Global slots: Max concurrent active download slots across all torrents.
+throttle.max_downloads.global.set = 300
+
+# Global slots: Max concurrent active upload slots across all torrents.
+throttle.max_uploads.global.set = 300
+
+# Per-torrent slots: Max active download slots per torrent.
+throttle.max_downloads.set = 50
+
+# Per-torrent slots: Max active upload slots per torrent.
+# Capped at 30 to limit concurrent random read operations on the NAS.
+throttle.max_uploads.set = 30
+
+# Minimum number of peers to maintain per torrent while downloading.
+# Triggers tracker requests if the count drops below this value.
+throttle.min_peers.normal.set = 99
+
+# Maximum number of peers to maintain per torrent while downloading.
+# Kept 2-3x higher than active slots to reduce connection overhead.
+throttle.max_peers.normal.set = 100
+
+# Minimum number of peers per torrent while seeding (-1 matches downloading).
+throttle.min_peers.seed.set = -1
+
+# Maximum number of peers per torrent while seeding (-1 matches downloading).
+throttle.max_peers.seed.set = -1
+
+# Number of peers to request from the tracker.
+trackers.numwant.set = 100
+
+# ------------------------------------------------------------------------------
+# Memory Management & Disk I/O
+# ------------------------------------------------------------------------------
+# Verify data integrity using hash checks when a torrent completes downloading.
+pieces.hash.on_completion.set = yes
+
+# Preloading type: 1 = Madvise. Tells kernel to fetch pages asynchronously.
+# Crucial for NFS: prevents the rTorrent thread from blocking on network file reads.
+pieces.preload.type.set = 1
+
+# Max virtual memory address space allocated for mapping file chunks.
+# Scaled to 32GB to leverage the 96GB host RAM for caching active torrent files.
+pieces.memory.max.set = 32G
+
+# Disable space allocation (fallocate) on file creation.
+# Crucial for NFS: prevents blocking the main thread while writing zeroes over network.
+system.file.allocate = 0
+
+# Max file size supported by rTorrent.
+system.file.max_size.set = 5000G
+
+# ------------------------------------------------------------------------------
+# Protocols & Discovery
+# ------------------------------------------------------------------------------
+# Enable Distributed Hash Table (DHT) for trackerless torrents.
+dht.mode.set = auto
+
+# Force DHT to use the same listening port range as peer traffic.
+dht.override_port.set = @startPort@
+
+# Enable Peer Exchange (PEX) for peer discovery.
+protocol.pex.set = yes
+
+# Connection encryption: allow encrypted incoming, try encrypted outgoing.
+protocol.encryption.set = allow_incoming,try_outgoing,enable_retry
+
+# Support UTF-8 encoding for file names.
+encoding.add = utf8
+
+# Enable UDP tracker support.
+trackers.use_udp.set = yes
+
+# ------------------------------------------------------------------------------
+# Logging
+# ------------------------------------------------------------------------------
+# Open log output file in the session directory.
+log.open_file = "rtorrent", @sessionDir@/rtorrent.log
+
+# Log levels and output channels.
+log.add_output = "info", "rtorrent"
+log.add_output = "critical", "rtorrent"
+log.add_output = "error", "rtorrent"
+log.add_output = "warn", "rtorrent"
+log.add_output = "tracker_events", "rtorrent"
+log.add_output = "tracker_requests", "rtorrent"
+log.add_output = "peer_info", "rtorrent"
+log.add_output = "peer_error", "rtorrent"

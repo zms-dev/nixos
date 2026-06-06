@@ -1,0 +1,26 @@
+# Nix build symlinks
+result
+result-*
+.pre-commit-config.yaml
+
+# VM / disk images
+*.qcow2
+*.raw
+*.img
+*.iso
+
+# Development environment
+.direnv/
+.devenv/
+.env
+
+# Backup and temp files
+*~
+*.swp
+
+# OS generated files
+.DS_Store
+
+# AI assistant / Antigravity files
+.antigravitycli/
+.serena/
