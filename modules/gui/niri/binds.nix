@@ -1,3 +1,7 @@
+/*
+  binds — key bindings configuration for the niri scrollable-tiling Wayland compositor
+  https://github.com/YaLTeR/niri
+*/
 { den, ... }:
 {
   den.aspects.gui._.niri._.binds = {

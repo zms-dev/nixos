@@ -1,3 +1,7 @@
+/*
+  disko — declarative disk partitioning and formatting
+  https://github.com/nix-community/disko
+*/
 { inputs, ... }:
 {
   den.aspects.boot._.disko = {

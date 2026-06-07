@@ -1,3 +1,4 @@
+# br-dmz — bridge interface configuration for DMZ subnet
 { den, ... }:
 {
   den.aspects.networking._.interfaces._.br-dmz = {

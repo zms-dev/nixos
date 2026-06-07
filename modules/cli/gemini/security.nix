@@ -1,3 +1,4 @@
+# security — API key and authentication security settings for gemini-cli
 { den, ... }:
 {
   den.aspects.cli._.gemini-cli._.security = {

@@ -1,3 +1,4 @@
+# disks — disk partitioning, LUKS encryption, and Btrfs subvolumes layout for desktop host
 { den, inputs, ... }:
 {
   den.aspects.hosts._.desktop._.disks = {

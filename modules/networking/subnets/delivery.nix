@@ -1,3 +1,4 @@
+# delivery — delivery subnet configuration
 { den, ... }:
 {
   den.aspects.networking._.subnets._.delivery = {

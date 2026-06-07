@@ -1,3 +1,4 @@
+# before-model — before-model event hook configuration for gemini-cli
 { ... }:
 {
   den.aspects.cli._.gemini-cli._.hooks._.before-model = {

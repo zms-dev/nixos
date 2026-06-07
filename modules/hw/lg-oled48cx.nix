@@ -1,4 +1,7 @@
-# LG OLED48CX — 48" 4K OLED TV/monitor (2020); ddcutil for DDC/CI brightness and input switching over i2c-dev
+/*
+  lg-oled48cx — LG OLED48CX monitor integration using ddcutil for DDC/CI brightness/input control
+  https://github.com/rockowitz/ddcutil
+*/
 { ... }:
 {
   den.aspects.hw._.lg-oled48cx = {

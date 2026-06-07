@@ -1,3 +1,4 @@
+# secure — secure subnet configuration
 { den, ... }:
 {
   den.aspects.networking._.subnets._.secure = {

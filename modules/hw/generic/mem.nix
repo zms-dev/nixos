@@ -1,4 +1,4 @@
-# memory — kernel VM tuning for large-RAM desktops and zram swap (zstd compression, 25% of RAM)
+# mem — kernel virtual memory tuning and zram swap configuration for high-RAM systems
 { ... }:
 {
   den.aspects.hw._.mem = {

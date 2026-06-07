@@ -1,3 +1,4 @@
+# before-tool-selection — before-tool-selection event hook configuration for gemini-cli
 { ... }:
 {
   den.aspects.cli._.gemini-cli._.hooks._.before-tool-selection = {

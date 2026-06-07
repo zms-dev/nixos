@@ -1,3 +1,4 @@
+# mounts — custom filesystem mount points and options configuration for desktop host
 { ... }:
 {
   den.aspects.hosts._.desktop._.mounts = {

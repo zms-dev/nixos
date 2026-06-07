@@ -1,4 +1,7 @@
-# Corsair Dominator Titanium — DDR5 RGB RAM; sets white Direct mode via OpenRGB at boot
+/*
+  corsair-dominator-titanium — DDR5 RGB RAM configuration and boot-time OpenRGB control
+  https://gitlab.com/CalcProgrammer1/OpenRGB
+*/
 { den, ... }:
 {
   den.aspects.hw._.corsair-dominator-titanium = {

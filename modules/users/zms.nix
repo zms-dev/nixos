@@ -1,3 +1,4 @@
+# zms — configuration for the primary system user profile
 { den, ... }:
 {
   den.aspects.users._.zms = {

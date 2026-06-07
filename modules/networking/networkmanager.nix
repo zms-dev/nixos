@@ -1,3 +1,7 @@
+/*
+  networkmanager — NetworkManager service for dynamic network configuration
+  https://networkmanager.dev/
+*/
 { den, ... }:
 {
   den.aspects.networking._.networkmanager = {

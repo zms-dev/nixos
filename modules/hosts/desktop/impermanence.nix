@@ -1,3 +1,4 @@
+# impermanence — persistent file and directory paths definition for the ephemeral root desktop workstation
 { den, ... }:
 {
   den.aspects.hosts._.desktop._.impermanence = {

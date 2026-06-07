@@ -1,4 +1,4 @@
-# SanDisk Extreme Pro 4TB USB Drive — persistent declarative mount with systemd-automount
+# sandisk-usb — persistent mount configuration for SanDisk USB flash drives via systemd-automount
 { den, ... }:
 {
   den.aspects.hw._.sandisk-usb = {

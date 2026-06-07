@@ -1,4 +1,4 @@
-# AMD CPU — microcode updates, amd_pstate=active driver, k10temp/kvm-amd modules, performance governor
+# amd-9800-x3d — hardware profile and CPU optimizations for AMD Ryzen 7 9800X3D processor
 { ... }:
 {
   den.aspects.hw._.amd-9800-x3d = {

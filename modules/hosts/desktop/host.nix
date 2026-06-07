@@ -1,3 +1,4 @@
+# desktop — configuration profile aggregating all aspects and hardware profiles for the desktop workstation host
 { den, ... }:
 {
   den.aspects.hosts._.desktop = {

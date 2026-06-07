@@ -1,3 +1,7 @@
+/*
+  impermanence — declarative persistence for ephemeral root storage
+  https://github.com/nix-community/impermanence
+*/
 { inputs, ... }:
 {
   den.aspects.boot._.impermanence = {

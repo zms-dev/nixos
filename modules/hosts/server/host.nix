@@ -1,3 +1,4 @@
+# server — configuration profile aggregating all aspects and containerized services for the server host
 { den, ... }:
 {
   den.aspects.hosts._.server = {

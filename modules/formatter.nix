@@ -1,3 +1,4 @@
+# formatter — repository-wide code formatter configuration
 { ... }:
 {
   perSystem =

@@ -1,3 +1,4 @@
+# dmz — DMZ subnet configuration
 { den, ... }:
 {
   den.aspects.networking._.subnets._.dmz = {

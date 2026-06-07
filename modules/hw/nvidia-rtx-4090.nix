@@ -1,4 +1,7 @@
-# NVIDIA GeForce RTX 4090 — 24GB GDDR6X; open kernel module, modesetting, Wayland/GBM env vars
+/*
+  nvidia-rtx-4090 — Nvidia graphics driver configuration, open kernel modules, and environment flags for Wayland
+  https://github.com/NVIDIA/open-gpu-kernel-modules
+*/
 { den, ... }:
 {
   den.aspects.hw._.nvidia-rtx-4090 = {

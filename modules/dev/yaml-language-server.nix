@@ -1,3 +1,7 @@
+/*
+  yaml-language-server — Language Server Protocol (LSP) server for YAML
+  https://github.com/redhat-developer/yaml-language-server
+*/
 { ... }:
 {
   den.aspects.dev._.yaml-language-server = {

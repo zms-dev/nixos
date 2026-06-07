@@ -1,3 +1,4 @@
+# installer — automated NixOS host installation and secrets bootstrap scripts
 { inputs, ... }:
 {
   den.default.nixos =

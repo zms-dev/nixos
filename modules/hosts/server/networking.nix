@@ -1,3 +1,4 @@
+# networking — network configuration, bond interfaces, and NAT settings for server host
 { den, ... }:
 {
   den.aspects.hosts._.server._.networking = {

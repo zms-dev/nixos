@@ -1,3 +1,7 @@
+/*
+  flood — web UI frontend for rTorrent and other BitTorrent clients
+  https://github.com/jesec/flood
+*/
 { den, lib, ... }:
 {
   den.aspects.containers._.flood = {

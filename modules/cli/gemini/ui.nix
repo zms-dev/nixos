@@ -1,3 +1,4 @@
+# ui — UI and theme settings configuration for gemini-cli
 { ... }:
 {
   den.aspects.cli._.gemini-cli._.ui = {

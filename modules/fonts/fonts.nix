@@ -1,3 +1,4 @@
+# fonts — system-wide font configuration and fontconfig defaults
 { den, ... }:
 {
   den.aspects.fonts._.fonts = {

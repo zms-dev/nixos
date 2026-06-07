@@ -1,3 +1,4 @@
+# pre-compress — pre-compress event hook configuration for gemini-cli
 { ... }:
 {
   den.aspects.cli._.gemini-cli._.hooks._.pre-compress = {

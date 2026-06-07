@@ -1,3 +1,4 @@
+# nixos-config group — system group for NixOS configuration access
 { den, ... }:
 {
   den.aspects.groups._.nixos-config = {

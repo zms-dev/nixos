@@ -1,3 +1,4 @@
+# networking — network configuration and hostname settings for desktop host
 { den, ... }:
 {
   den.aspects.hosts._.desktop._.networking = {

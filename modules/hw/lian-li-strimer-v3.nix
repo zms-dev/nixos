@@ -1,4 +1,7 @@
-# Lian Li Strimer V3 — addressable RGB ARGB cable extension; controlled via OpenRGB
+/*
+  lian-li-strimer-v3 — Lian Li Strimer V3 ARGB extensions configuration and control via OpenRGB
+  https://gitlab.com/CalcProgrammer1/OpenRGB
+*/
 { den, ... }:
 {
   den.aspects.hw._.lian-li-strimer-v3 = {

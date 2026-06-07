@@ -1,4 +1,7 @@
-# SteelSeries Arctis Nova Pro Wireless — premium wireless gaming headset; controlled via headsetcontrol
+/*
+  steelseries-arctis-nova-pro — SteelSeries Arctis Nova Pro wireless headset configuration and integration with HeadsetControl
+  https://github.com/SirenOfTiles/HeadsetControl
+*/
 { den, ... }:
 {
   den.aspects.hw._.steelseries-arctis-nova-pro = {

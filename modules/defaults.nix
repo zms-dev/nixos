@@ -1,3 +1,4 @@
+# defaults — system-wide default configuration options for NixOS and Home Manager
 { lib, den, ... }:
 {
   den.default.nixos.system.stateVersion = "26.05";

@@ -1,3 +1,4 @@
+# disks — basic disk partitioning and filesystem layout configuration via Disko for server host
 { den, ... }:
 {
   den.aspects.hosts._.server._.disks = {

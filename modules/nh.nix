@@ -1,4 +1,7 @@
-# Exposes flake apps under the name of each host / home for building with nh.
+/*
+  nh — command-line Nix helper for simplified system building and updates
+  https://github.com/viperML/nh
+*/
 { den, lib, ... }:
 {
   perSystem =

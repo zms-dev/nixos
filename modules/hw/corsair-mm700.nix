@@ -1,4 +1,7 @@
-# Corsair MM700 — RGB extended gaming mousepad; sets per-zone white Direct mode via OpenRGB
+/*
+  corsair-mm700 — Corsair MM700 RGB mousepad color customization via OpenRGB
+  https://gitlab.com/CalcProgrammer1/OpenRGB
+*/
 { den, ... }:
 {
   den.aspects.hw._.corsair-mm700 = {

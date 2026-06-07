@@ -1,4 +1,7 @@
-# NZXT Kraken Elite 2024 — 360mm AIO liquid cooler with LCD display; OpenRGB + CoolerControl pump/fan/LCD config
+/*
+  nzxt-kraken-elite-v2 — NZXT Kraken Elite liquid cooler profile, configuring fan curves and LCD display via CoolerControl
+  https://gitlab.com/coolercontrol/coolercontrol
+*/
 { den, ... }:
 let
   krakenUid = "56560c774d8a21690967043f6aa1fb726ecfaddbf7e53a54c43e67ebfc0ec54b";

@@ -1,3 +1,4 @@
+# br-backend — bridge interface configuration for backend subnet
 { den, ... }:
 {
   den.aspects.networking._.interfaces._.br-backend = {
