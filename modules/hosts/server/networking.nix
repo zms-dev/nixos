@@ -6,16 +6,23 @@
       den.aspects.services._.resolved
       den.aspects.networking._.nat
       den.aspects.networking._.networkmanager
+      den.aspects.networking._.ports
       den.aspects.networking._.interfaces._.bond0
-      den.aspects.networking._.interfaces._.br-backend
-      den.aspects.networking._.interfaces._.br-delivery
-      den.aspects.networking._.interfaces._.br-dmz
-      den.aspects.networking._.interfaces._.br-secure
-      den.aspects.networking._.interfaces._.br-untrusted
+      den.aspects.networking._.interfaces._.br-untrusted-ingress
+      den.aspects.networking._.interfaces._.br-trusted-ingress
+      den.aspects.networking._.interfaces._.br-untrusted-egress
+      den.aspects.networking._.interfaces._.br-trusted-egress
+      den.aspects.networking._.interfaces._.br-isolated
+      den.aspects.networking._.zones._.wan
+      den.aspects.networking._.zones._.isolated
+      den.aspects.networking._.zones._.trusted-ingress
+      den.aspects.networking._.zones._.trusted-egress
+      den.aspects.networking._.zones._.untrusted-ingress
+      den.aspects.networking._.zones._.untrusted-egress
     ];
 
     nixos =
-      { lib, ... }:
+      { config, lib, ... }:
       {
         networking = {
           hostName = "server";
@@ -27,6 +34,7 @@
         };
 
         virtualisation.vmVariant = {
+          virtualisation.diskSize = 8192;
           networking.bonds = lib.mkForce { };
           networking.interfaces.bond0 = lib.mkForce { };
           networking.interfaces.eth0.useDHCP = true;

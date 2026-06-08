@@ -1,55 +1,70 @@
-# Subnet Architecture & Segmentation Design
+# Subnet Architecture & Traffic Segmentation Design
 
-This document defines the 5 distinct subnets (L2 bridges & L3 segments) configured on the `server` host. The network is segmented by security level, bandwidth profile, and exposure vector to enforce clean boundary controls and avoid hardcoded IP/port assumptions across containers.
+This document defines the 5 distinct subnets (L2 bridges & L3 segments) configured on the `server` host. The network is segmented by traffic type, initiation vector, and destination familiarity to enforce boundary controls.
 
 ---
 
-## 1. Subnet Tiers Reference
+## 1. Subnet Traffic Taxonomy
 
-| Subnet Name | CIDR Block | Bridge Interface | Intent / Focus | NAT (WAN Access) |
+| Subnet Name | CIDR Block | Bridge Interface | Traffic Profile | NAT (WAN Access) |
 | :--- | :--- | :--- | :--- | :--- |
-| **`untrusted`** | `10.1.0.0/24` | `br-untrusted` | Peer-to-Peer clients (torrent daemons). | **Yes** (required for P2P connection pool) |
-| **`dmz`** | `10.10.0.0/24` | `br-dmz` | Remote-facing user interfaces or public services. | **Yes** (required for metadata & package updates) |
-| **`delivery`** | `10.30.0.0/24` | `br-delivery` | Bandwidth-heavy WAN downloaders (Usenet/crawlers). | **Yes** (required for active file downloading) |
-| **`backend`** | `10.50.0.0/24` | `br-backend` | Automation daemons, APIs, and sync tools. | **Yes** (required for metadata/tracker queries) |
-| **`secure`** | `10.100.0.0/24` | `br-secure` | Administrative portals, home controls, and local DNS. | **Yes** (required for cloud integrations/DNS sync) |
+| **`untrusted-ingress`** | `10.10.1.0/24` | `br-untr-in` | **Incoming - Unknown**: Arbitrary external P2P torrent peers initiating inbound connections. | **Yes** (P2P peer communication) |
+| **`trusted-ingress`** | `10.10.100.0/24` | `br-trust-in` | **Incoming - Known**: Authenticated user clients/agents accessing web UIs, dashboards, or portals. | **Yes** (Metadata/updates retrieval) |
+| **`untrusted-egress`** | `10.50.1.0/24` | `br-untr-eg` | **Outgoing - Unknown**: Downloader clients pulling down heavy payloads from arbitrary WAN hosts. | **Yes** (Heavy download payload traffic) |
+| **`trusted-egress`** | `10.50.100.0/24` | `br-trust-eg` | **Outgoing - Known**: Coordinators, managers, and scrapers querying specific, well-defined metadata or indexer APIs. | **Yes** (Known API and metadata traffic) |
+| **`isolated`** | `10.100.100.0/24` | `br-isolated` | **LAN-Only**: Strictly local traffic with zero outbound WAN (NAT) access. | **No** (Completely isolated from the Internet) |
 
 ---
 
-## 2. Tier Details & Restrictions
+## 2. Subnet Definitions & Container Placements
 
-### `untrusted` (Tier 1: `10.1.0.0/24`)
-* **Usage**: Services engaging in untrusted public networking where remote host IPs cannot be validated.
-* **Services**: `rtorrent`.
-* **Restrictions**:
-  * Outbound WAN access is allowed (NAT).
-  * No access to other internal subnets is permitted. Only local responses to connections initiated by the host/backend proxy (e.g. Flood) are allowed.
+### `untrusted-ingress` (Tier 1: `10.10.1.0/24`)
+* **Intention**: Hosts peer-to-peer applications exposed directly to unknown incoming external peers.
+* **NAT Enabled**: Yes (incoming/outgoing torrent peer discovery).
+* **Bridge**: `br-untr-in`
+* **Containers**:
+  * `rtorrent` (peer-to-peer torrent client).
 
-### `dmz` (Tier 2: `10.10.0.0/24`)
-* **Usage**: Web portals designed to be exposed to external users or guest clients, typically sitting behind a reverse proxy (e.g. Caddy/Nginx) on the host.
-* **Services**: `seerr` (Overseerr), `jellyfin`, `wikimedia`.
-* **Restrictions**:
-  * Outbound WAN access is allowed (NAT).
-  * Should not directly query `secure` subnet services. Access to `backend` APIs (e.g. Jellyfin querying Radarr/Sonarr) should be tightly controlled and proxied.
+### `trusted-ingress` (Tier 2: `10.10.100.0/24`)
+* **Intention**: Interactive web portals, dashboards, and version control instances that receive incoming traffic from known/authenticated users (either on the LAN or remote proxy).
+* **NAT Enabled**: Yes (for fetching media metadata, remote webhooks, and updates).
+* **Bridge**: `br-trust-in`
+* **Containers**:
+  * `jellyfin` (media player server).
+  * `seerr` (Overseerr requests portal).
+  * `forgejo` (Git repository service).
+  * `home-assistant` (smart home administration dashboard).
+  * `homepage` (application directory/status dashboard).
+  * `linkding` (bookmark dashboard).
+  * `opencode` (web VS Code IDE server).
+  * `wikimedia` (documentation wiki portal).
 
-### `delivery` (Tier 3: `10.30.0.0/24`)
-* **Usage**: Bulk data retrieval services. Separated from `untrusted` (due to different protocol/peer profiles like Usenet vs BitTorrent) and `backend` (to prevent high-bandwidth downloading from saturating administrative control paths).
-* **Services**: `nzbget`, `metube`.
-* **Restrictions**:
-  * Outbound WAN access is allowed (NAT).
-  * Only accepts incoming RPC/API requests from authorized automation controllers in the `backend` subnet (e.g. Sonarr/Radarr talking to NZBGet).
+### `untrusted-egress` (Tier 3: `10.50.1.0/24`)
+* **Intention**: Downloader clients that initiate outgoing connections to arbitrary external WAN nodes to pull down large files (payloads).
+* **NAT Enabled**: Yes (required to fetch files from arbitrary sites).
+* **Bridge**: `br-untr-eg`
+* **Containers**:
+  * `nzbget` (Usenet downloader).
+  * `metube` (YouTube/web video downloader).
+  * `speedtest-tracker` (downloads payloads from arbitrary speedtest nodes to measure WAN performance).
 
-### `backend` (Tier 4: `10.50.0.0/24`)
-* **Usage**: The core automation pipeline and supporting services that orchestrate data flows.
-* **Services**: `flood`, `prowlarr`, `radarr`, `sonarr`, `lidarr`, `readarr`, `bazarr`, `nzbhydra`, `autobrr`, `buildarr`, `recyclarr`, `tdarr`, `unpackerr`.
-* **Restrictions**:
-  * Outbound WAN access is allowed (NAT) to scrape indexers/metadata and fetch package updates.
-  * Directly allowed to make outbound API queries to `delivery` (NZBGet) and `untrusted` (rTorrent) nodes to manage downloads.
-  * No direct exposure to the public internet/guests. Access is limited to internal APIs or proxy routing.
+### `trusted-egress` (Tier 4: `10.50.100.0/24`)
+* **Intention**: Automation coordinators, scrapers, indexers, and local control interfaces. These services only initiate outbound WAN connections to specific, known APIs (e.g. MusicBrainz, TVDb, TMDb, subtitle APIs, indexer endpoints).
+* **NAT Enabled**: Yes (restricted to specific known API endpoints via host firewall/routing where possible).
+* **Bridge**: `br-trust-eg`
+* **Containers**:
+  * `flood` (web controller for rTorrent).
+  * `radarr` / `sonarr` / `lidarr` / `readarr` (media automation stack).
+  * `prowlarr` / `nzbhydra` (indexer proxies).
+  * `bazarr` (subtitle tracker).
+  * `autobrr` (IRC/announce automation).
+  * `buildarr` / `recyclarr` (declarative configuration sync agents).
+  * `tdarr` (media transcode orchestrator).
 
-### `secure` (Tier 5: `10.100.0.0/24`)
-* **Usage**: High-trust management applications, LAN controllers, local developer environments, and DNS sinkholes.
-* **Services**: `pi-hole`, `home-assistant`, `homepage`, `linkding`, `speedtest-tracker`, `opencode`, `forgejo`.
-* **Restrictions**:
-  * Outbound WAN access is allowed (NAT) for smart home cloud integrations, software updates, bookmark metadata parsing, and upstream DNS lookups.
-  * Admin portals (e.g. Forgejo, Pi-hole Web UI, Home Assistant) are accessible only from local host/LAN clients.
+### `isolated` (Tier 5: `10.100.100.0/24`)
+* **Intention**: Core LAN utility services that do not need outbound WAN access. They operate strictly within the local host/bridge networks.
+* **NAT Enabled**: No (completely blocked from accessing the internet).
+* **Bridge**: `br-isolated`
+* **Containers**:
+  * `pi-hole` (provides local DNS resolving to other local subnets and caches local records).
+  * `unpackerr` (runs background extraction of local archive files).

@@ -13,8 +13,10 @@
 
       den.aspects.services._.ssh
 
+      den.aspects.containers._.autobrr
       den.aspects.containers._.bazarr
       den.aspects.containers._.buildarr
+      den.aspects.containers._.caddy
       den.aspects.containers._.flood
       den.aspects.containers._.forgejo
       den.aspects.containers._.home-assistant

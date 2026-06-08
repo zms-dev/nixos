@@ -6,7 +6,11 @@
 {
   den.aspects.containers._.flood = {
     includes = [
-      den.aspects.networking._.interfaces._.br-backend
+      den.aspects.networking._.ports
+      den.aspects.networking._.interfaces._.br-trusted-egress
+      den.aspects.networking._.zones._.trusted-egress
+      den.aspects.networking._.zones._.trusted-ingress
+      den.aspects.containers._.rtorrent
     ];
 
     provides.to-hosts.nixos =
@@ -21,27 +25,23 @@
         };
 
         config = {
+          networking.hostPorts.flood = 3000;
           containers.flood =
             let
               port = config.containerPorts.flood.port;
-              rtHost = config.networking.subnets.untrusted.namedAddresses.rtorrent;
+              rtHost = "rtorrent.untrusted-ingress";
               rtPort = config.containerPorts.rtorrent.scgi;
               rootDir = "/var/lib/flood";
-              net = config.networking.subnets.backend;
+              net = config.networking.subnets.trusted-egress;
               containerIp = net.namedAddresses.flood;
+              extraHosts = config.networking.subnetExtraHosts;
             in
             {
               autoStart = true;
               privateNetwork = true;
-              hostBridge = "br-backend";
+              hostBridge = config.networking.interfaces.br-trust-eg.name;
               localAddress = "${containerIp}/${toString net.prefixLength}";
-              forwardPorts = [
-                {
-                  hostPort = port;
-                  containerPort = port;
-                  protocol = "tcp";
-                }
-              ];
+              forwardPorts = [ ];
               bindMounts = {
                 "${rootDir}" = {
                   hostPath = "/mnt/flood";
@@ -60,8 +60,10 @@
                   ...
                 }:
                 {
+                  system.stateVersion = "26.05";
                   networking.enableIPv6 = false;
                   networking.defaultGateway = net.gateway;
+                  networking.extraHosts = extraHosts;
                   networking.firewall.allowedTCPPorts = [ port ];
 
                   environment.systemPackages = [
@@ -115,6 +117,21 @@
                   };
                 };
             };
+
+          networking.zones.trusted-egress.forwardRules = [
+            {
+              fromIp = config.networking.subnets.trusted-egress.namedAddresses.flood;
+              toContainer = config.containers.rtorrent;
+              toPort = config.containerPorts.rtorrent.scgi;
+            }
+          ];
+
+          networking.zones.trusted-ingress.forwardRules = [
+            {
+              toContainer = config.containers.flood;
+              toPort = config.containerPorts.flood.port;
+            }
+          ];
         };
       };
   };
