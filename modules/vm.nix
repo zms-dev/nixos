@@ -20,17 +20,14 @@
         text =
           let
             host = inputs.self.nixosConfigurations.server.config;
-            toHostFwd =
-              f:
-              let
-                proto = f.protocol or "tcp";
-                hostP = toString f.hostPort;
-                contP = toString (f.containerPort or f.hostPort);
-              in
-              "hostfwd=${proto}::${hostP}-:${contP}";
+            toHostFwd = proto: port: "hostfwd=${proto}::${toString port}-:${toString port}";
 
-            allForwards = builtins.concatMap (c: c.forwardPorts) (builtins.attrValues host.containers);
-            qemuNetOpts = builtins.concatStringsSep "," (map toHostFwd allForwards);
+            qemuNetOpts =
+              let
+                ports = builtins.attrValues host.networking.hostPorts;
+                fwds = map (toHostFwd "tcp") ports ++ [ "hostfwd=tcp::22222-:22" ];
+              in
+              builtins.concatStringsSep "," fwds;
           in
           ''
             mkdir -p /tmp/vm-server-mnt

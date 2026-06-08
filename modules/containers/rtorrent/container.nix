@@ -6,7 +6,10 @@
 {
   den.aspects.containers._.rtorrent = {
     includes = [
-      den.aspects.networking._.interfaces._.br-untrusted
+      den.aspects.networking._.ports
+      den.aspects.networking._.interfaces._.br-untrusted-ingress
+      den.aspects.networking._.zones._.untrusted-ingress
+      den.aspects.networking._.zones._.wan
     ];
 
     provides.to-hosts.nixos =
@@ -18,44 +21,24 @@
             default = 5000;
             description = "rTorrent SCGI port";
           };
-          start = lib.mkOption {
-            type = lib.types.port;
-            default = 49161;
-            description = "rTorrent incoming connection start port";
-          };
-          end = lib.mkOption {
-            type = lib.types.port;
-            default = 49161;
-            description = "rTorrent incoming connection end port";
-          };
         };
 
         config = {
+          networking.hostPorts.rtorrent-peer = 49161;
           containers.rtorrent =
             let
               rootDir = "/var/lib/rtorrent";
-              startPort = config.containerPorts.rtorrent.start;
-              endPort = config.containerPorts.rtorrent.end;
+              peerPort = config.networking.hostPorts.rtorrent-peer;
               scgiPort = config.containerPorts.rtorrent.scgi;
-              net = config.networking.subnets.untrusted;
+              net = config.networking.subnets.untrusted-ingress;
               containerIp = net.namedAddresses.rtorrent;
+              extraHosts = config.networking.subnetExtraHosts;
             in
             {
               autoStart = true;
               privateNetwork = true;
-              hostBridge = "br-untrusted";
+              hostBridge = config.networking.interfaces.br-untr-in.name;
               localAddress = "${containerIp}/${toString net.prefixLength}";
-              forwardPorts =
-                (map (p: {
-                  hostPort = p;
-                  containerPort = p;
-                  protocol = "tcp";
-                }) (lib.range startPort endPort))
-                ++ (map (p: {
-                  hostPort = p;
-                  containerPort = p;
-                  protocol = "udp";
-                }) (lib.range startPort endPort));
               bindMounts = {
                 "${rootDir}" = {
                   hostPath = "/mnt/rtorrent";
@@ -74,10 +57,15 @@
                   ...
                 }:
                 {
+                  system.stateVersion = "26.05";
                   networking.enableIPv6 = false;
                   networking.defaultGateway = net.gateway;
-                  networking.firewall.allowedTCPPorts = (lib.range startPort endPort) ++ [ scgiPort ];
-                  networking.firewall.allowedUDPPorts = lib.range startPort endPort;
+                  networking.extraHosts = extraHosts;
+                  networking.firewall.allowedTCPPorts = [
+                    scgiPort
+                    peerPort
+                  ];
+                  networking.firewall.allowedUDPPorts = [ peerPort ];
 
                   environment.systemPackages = [
                     pkgs.tmux
@@ -120,8 +108,8 @@
 
                           configFile = pkgs.replaceVars ./rtorrent.rc {
                             inherit downloadDir sessionDir watchDir;
-                            startPort = toString startPort;
-                            endPort = toString endPort;
+                            startPort = toString peerPort;
+                            endPort = toString peerPort;
                             scgiPort = toString scgiPort;
                           };
 
@@ -143,6 +131,32 @@
                     };
                 };
             };
+
+          networking.zones.wan.preroutingRules = [
+            {
+              toContainer = config.containers.rtorrent;
+              toPort = config.networking.hostPorts.rtorrent-peer;
+              hostPort = config.networking.hostPorts.rtorrent-peer;
+            }
+            {
+              toContainer = config.containers.rtorrent;
+              toPort = config.networking.hostPorts.rtorrent-peer;
+              hostPort = config.networking.hostPorts.rtorrent-peer;
+              proto = "udp";
+            }
+          ];
+
+          networking.zones.wan.forwardRules = [
+            {
+              toContainer = config.containers.rtorrent;
+              toPort = config.networking.hostPorts.rtorrent-peer;
+            }
+            {
+              toContainer = config.containers.rtorrent;
+              toPort = config.networking.hostPorts.rtorrent-peer;
+              proto = "udp";
+            }
+          ];
         };
       };
   };
