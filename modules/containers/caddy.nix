@@ -8,6 +8,7 @@
     includes = [
       den.aspects.networking._.ports
       den.aspects.networking._.interfaces._.bond0
+      den.aspects.networking._.interfaces._.br-trusted-ingress
       den.aspects.networking._.zones._.wan
     ];
 
